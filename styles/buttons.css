@@ -1,0 +1,75 @@
+.switcher {
+  position: relative;
+  width:200px;
+  height:50px;
+  border-radius:25px;
+  margin:20px 0;
+}
+
+.switcher input{
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+  width:200px;
+  height:50px;
+  border-radius:25px;
+
+  font-family: sans-serif;
+  font-weight:bold;
+  font-size:16px;
+}
+
+span.switcher input:before, span.switcher input:after{
+  position: absolute;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+span.switcher input:before{
+  content: 'User';
+  left:20px;
+}
+
+span.switcher input:after{
+  content: 'Admin';
+  right:20px;
+}
+
+.switcher-1 input:not(:checked){
+  background:#1E1E1E;
+  transition: .5s .2s;
+}
+
+.switcher-1 input:not(:checked):hover{
+  box-shadow: 0 2px 25px rgba(30, 30, 30, 0.5);
+}
+
+.switcher-1 input:not(:checked):before{
+  color: white;
+  transition: color .5s;
+}
+
+.switcher-1 input:not(:checked):after{
+  color: #1E1E1E;
+  transition: color .5s .2s;
+}
+
+.switcher-1 input:checked{
+  background-color:#ff0081;
+  transition: .5s .2s;
+}
+
+.switcher-1 input:checked:hover{
+  background-color:#eb0077;
+  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+}
+
+.switcher-1 input:checked:before{
+  color:#ff0081;
+  transition: color .5s .2s;
+}
+
+.switcher-1 input:checked:after{
+  color:white;
+  transition: color .5s .2s;
+}

@@ -5,7 +5,8 @@
     <title>Spin The Wheel</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="styles/style.css" type="text/css" />
+    <link rel="stylesheet" href="styles/buttons.css" type="text/css" />
     <script type="text/javascript" src="Winwheel.min.js"></script>
     <script type="text/javascript" src="TweenMax.min.js"></script>
 </head>
@@ -14,6 +15,10 @@
         <div id="MainTitle">
             <h1>Spin The Wheel</h1>
             <p>Click <b>SPIN</b> to start winning!</p>
+            <span class="switcher switcher-1">
+                <input type="checkbox" id="switcher-1">
+                <label for="switcher-1"></label>
+             </span>
         </div>
         
         <div id="Wheel">
@@ -27,14 +32,18 @@
         
         <div id="Controls">
             <div id="Prize">
-                <label id="Prize-Text">Spin the Wheel!</label>
+                <label id="Context" class="singleLine">Spin the Wheel!</label>
+                <br><br>
+                <label id="Prize-Text" class="invisible">Spin the Wheel!</label>
             </div>
-            <br>
-            <img id="Spin_Button" class="clickable" src="images/spin_on.png" alt="Spin" onClick="startSpin();" />
-            <br />
-            <a href="#" onClick="resetWheel()">Play Again</a><br />(reset)
+            <div class="container">
+                <button id="Spin_Button" class="spin button clickable" onClick="startSpin();">SPIN</button>
+
+                <button id="Reset_Button" class="reset button clickable" onClick="resetWheel();">RESET</button>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/spinTheWheel.js"></script>
 </body>
 </html>

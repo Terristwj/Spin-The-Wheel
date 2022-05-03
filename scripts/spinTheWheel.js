@@ -72,10 +72,19 @@
         // -------------------------------------------------------
         function alertPrize()
         {
+            // Get elements.
+            let context = document.getElementById('Context');
             let prize = document.getElementById('Prize-Text');
             let wheelPrize = theWheel.getIndicatedSegment();
             
-            prize.innerHTML = "Congratulations!<br>You Won: " + wheelPrize.text + "!";
+            // Change context.
+            context.innerHTML = "Congratulations!";
+            context.classList.add('outcome');
+
+            // Change prize text.
+            prize.classList.add('outcome');
+            prize.classList.remove('invisible');
+            prize.innerHTML = "You Won: " + wheelPrize.text + "!";
 
             // Alert of segment text. (Optional)
             // alert("You have won " + wheelPrize.text);
@@ -110,8 +119,10 @@
                 theWheel.animation.spins = wheelSpins;
 
                 // Disable spin button while wheel is spinning.
-                document.getElementById('Spin_Button').src = "images/spin_off.png";
-                document.getElementById('Spin_Button').className = "";
+                // document.getElementById('Spin_Button').src = "images/spin_off.png";
+                var spinButtonClassList = document.getElementById('Spin_Button').classList;
+                spinButtonClassList.add('button-disabled');
+                spinButtonClassList.remove('clickable');
 
                 // Begin the spin animation by calling startAnimation on the wheel object.
                 theWheel.startAnimation();
@@ -132,15 +143,23 @@
             theWheel.draw();                // Call draw to render changes to the wheel.
 
             // Enable spin button while wheel is spinning.
-            document.getElementById('Spin_Button').src = "images/spin_on.png";
-            document.getElementById('Spin_Button').className = "clickable";
+            // document.getElementById('Spin_Button').src = "images/spin_on.png";
+            document.getElementById('Spin_Button').classList.add('clickable');
+            document.getElementById('Spin_Button').classList.remove('button-disabled');
 
             // Spin button can be clicked again.
             wheelSpinning = false;
 
             // Reset Prize text.
+            let context = document.getElementById('Context');
             let prize = document.getElementById('Prize-Text');
-            let wheelPrize = theWheel.getIndicatedSegment();
             
-            prize.innerHTML = "Spin the Wheel!";
+            // Change context.
+            context.innerHTML = "Spin the Wheel!";
+            context.classList.remove('outcome');
+
+            // Change prize text.
+            prize.classList.add('invisible');
+            prize.classList.remove('outcome');
+            prize.innerHTML = "";
         }

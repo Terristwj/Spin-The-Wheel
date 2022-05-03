@@ -1,0 +1,126 @@
+/* Debugging Borders */
+/* #Main, #Main p, .the_wheel, #Outcome, #Prize label, #Spin_Button, #Controls button{
+    border:5px solid red !important;
+}
+
+#MainTitle, #canvas, #Controls{
+    border:3px solid blue !important;
+}
+
+#Main h1, .switcher input, #Wheel, #Prize, #Controls .container{
+    border:3px solid green !important;
+} */
+
+
+
+
+/* CSS Starts Here */
+/* Header */
+#Main{
+    max-width: 931px;
+    margin:auto;
+    text-align:center;
+}
+
+#MainTitle{
+    border-bottom:3px solid black;
+    box-shadow: 0px 10px #888888;
+    border-radius: 50px;
+}
+
+#Main h1{
+    font-family: Arial;
+    line-height:15px;
+}
+#Main p{
+    font-family: sans-serif;
+    line-height:5px;
+}
+/*  */
+
+/* Sets the background image for the wheel */
+.the_wheel
+{
+    margin:auto;
+    padding-bottom:10px;
+}
+
+#canvas{
+    background-image: url(../images/wheel_back.png);
+    background-position: center;
+    background-repeat: none; 
+}
+/*  */
+
+/* Controls */
+#Controls{
+    border-top:3px solid black;
+    box-shadow: 0px -10px #888888;
+    border-radius: 50px;
+}
+
+#Prize{
+    padding-top:20px;
+    padding-bottom:10px;
+}
+
+#Prize label{
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.outcome{
+    line-height:0;
+}
+
+.invisible{
+    display: none;
+}
+
+.spin{
+    background-color: #0062FF;
+    box-shadow: 0 2px 25px rgba(0, 98, 255, 0.5);
+}
+.spin:hover{
+    background-color: #0033FF;
+    box-shadow: 0 2px 25px rgba(0, 51, 255, 0.5);
+}
+/* eb0077 */
+
+.reset{
+    background-color: #FF6600;
+    box-shadow: 0 2px 25px rgba(255, 102, 0, 0.5);
+}
+.reset:hover{
+    background-color: #FF3300;
+    box-shadow: 0 2px 25px rgba(255, 51, 0, 0.5);
+}
+
+#Controls .button{
+    font-size: 16px;
+    padding: 1em 2em;
+    margin-bottom: 10px;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    position: relative;
+    transition: box-shadow ease-in 0.25s, transform ease-in 0.25s;
+}
+#Controls .button:hover{
+    transform: scale(0.9);
+}
+/*  */
+
+/* Style applied to the spin button once a power has been selected */
+#Controls .button-disabled{
+    transform: scale(0.9);
+    background-color: #0033FF;
+    box-shadow: 0 2px 25px rgba(0, 51, 255, 0.5);
+    cursor:not-allowed;
+}
+.clickable
+{
+    cursor: pointer;
+}
+/*  */
