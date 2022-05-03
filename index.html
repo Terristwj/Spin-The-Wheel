@@ -30,7 +30,7 @@
                 <label id="Prize-Text">Spin the Wheel!</label>
             </div>
             <br>
-            <img id="Spin_Button" class="clickable" src="assets/spin_on.png" alt="Spin" onClick="startSpin();" />
+            <img id="Spin_Button" class="clickable" src="images/spin_on.png" alt="Spin" onClick="startSpin();" />
             <br />
             <a href="#" onClick="resetWheel()">Play Again</a><br />(reset)
         </div>
@@ -93,7 +93,7 @@
         // Function called when segment under the prize pointer changes.
         // Plays tick sound here.
         // -----------------------------------------------------------------
-        let audio = new Audio('assets/tick.mp3');  // Create audio object and load tick.mp3 file.
+        let audio = new Audio('images/tick.mp3');  // Create audio object and load tick.mp3 file.
 
         function playSound()
         {
@@ -149,7 +149,7 @@
                 theWheel.animation.spins = wheelSpins;
 
                 // Disable spin button while wheel is spinning.
-                document.getElementById('Spin_Button').src = "assets/spin_off.png";
+                document.getElementById('Spin_Button').src = "images/spin_off.png";
                 document.getElementById('Spin_Button').className = "";
 
                 // Begin the spin animation by calling startAnimation on the wheel object.
@@ -171,7 +171,7 @@
             theWheel.draw();                // Call draw to render changes to the wheel.
 
             // Enable spin button while wheel is spinning.
-            document.getElementById('Spin_Button').src = "assets/spin_on.png";
+            document.getElementById('Spin_Button').src = "images/spin_on.png";
             document.getElementById('Spin_Button').className = "clickable";
 
             // Spin button can be clicked again.
