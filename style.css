@@ -41,7 +41,7 @@
 }
 
 #canvas{
-    background-image: url(assets/wheel_back.png);
+    background-image: url(images/wheel_back.png);
     background-position: center;
     background-repeat: none; 
 }
