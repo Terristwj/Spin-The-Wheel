@@ -23,18 +23,20 @@
 }
 
 #MainTitle{
-    border-bottom:3px solid black;
-    box-shadow: 0px 10px #888888;
+    border-bottom:3px solid;
     border-radius: 50px;
+    transition: .5s .2s;
 }
 
 #Main h1{
-    font-family: Arial;
+    font-family: 'Verdana';
     line-height:15px;
+    transition: .5s .2s;
 }
 #Main p{
-    font-family: sans-serif;
+    font-family: 'Arial';
     line-height:5px;
+    transition: .5s .2s;
 }
 /*  */
 
@@ -47,6 +49,7 @@
 
 #canvas{
     background-image: url(../images/wheel_back.png);
+    background-size: 436px 587px;
     background-position: center;
     background-repeat: none; 
 }
@@ -54,9 +57,8 @@
 
 /* Controls */
 #Controls{
-    border-top:3px solid black;
-    box-shadow: 0px -10px #888888;
     border-radius: 50px;
+    transition: .5s .2s;
 }
 
 #Prize{
@@ -65,9 +67,10 @@
 }
 
 #Prize label{
-    font-family: Arial;
+    font-family: 'Verdana';
     font-weight: bold;
     font-size: 30px;
+    transition: .5s .2s;
 }
 
 .outcome{

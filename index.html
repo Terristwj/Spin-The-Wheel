@@ -7,16 +7,20 @@
     
     <link rel="stylesheet" href="styles/style.css" type="text/css" />
     <link rel="stylesheet" href="styles/buttons.css" type="text/css" />
+
+    <!-- Light/Dark Theme -->
+    <link id="theme" rel="stylesheet" href="" type="text/css" />
+
     <script type="text/javascript" src="Winwheel.min.js"></script>
     <script type="text/javascript" src="TweenMax.min.js"></script>
 </head>
-<body>
+<body onload="bodyLoad()">
     <div id="Main">
         <div id="MainTitle">
             <h1>Spin The Wheel</h1>
             <p>Click <b>SPIN</b> to start winning!</p>
             <span class="toggle">
-                <input type="checkbox" unchecked id="Toggle">
+                <input id="Toggle" type="checkbox" unchecked onclick="changeView()">
                 <label for="Toggle"></label>
              </span>
         </div>
