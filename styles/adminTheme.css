@@ -1,13 +1,22 @@
+/* Admin Theme */
 #Main h1, #Main p, #Prize label{
     color: #b3005b;
 }
 
 #MainTitle{
-    border-bottom:3px solid #ad0259;
+    border-bottom:3px solid #ff0081;
     box-shadow: 0px 10px #eb0077;
 }
 
 #Controls{
     border-top:3px solid #ff0081;
     box-shadow: 0px -10px #eb0077;
+}
+
+#FAB{
+    opacity: 1;
+}
+
+#FAB button{
+    cursor: pointer;
 }

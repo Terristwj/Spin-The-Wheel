@@ -1,3 +1,4 @@
+/* User Theme */
 #Main h1, #Main p, #Prize label{
     color: black;
 }
@@ -10,4 +11,12 @@
 #Controls{
     border-top:3px solid black;
     box-shadow: 0px -10px #888888;
+}
+
+#FAB{
+    opacity: 0;
+}
+
+#FAB button{
+    cursor:default;
 }
