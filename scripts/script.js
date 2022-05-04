@@ -23,9 +23,10 @@ function changeTheme(){
 
 // Open admin settings
 function openSettings(){
+    var isAdmin = document.getElementById("Toggle").checked;
     var closed = document.getElementById("AdminSettings").classList.contains('close-AdminSettings');
     // Open settings
-    if (closed)
+    if (closed && isAdmin)
         var x = document.getElementById("AdminSettings").classList.remove('close-AdminSettings');
     // Close settings
     else
