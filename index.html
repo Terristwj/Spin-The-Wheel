@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     
     <link rel="stylesheet" href="styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="styles/debugging.css" type="text/css" />
+    <link rel="stylesheet" href="styles/toggle.css" type="text/css" />
+    <link rel="stylesheet" href="styles/settings.css" type="text/css" />
 
-    <!-- Light/Dark Theme -->
+    <!-- User/Admin Theme -->
     <link id="theme" rel="stylesheet" href="" type="text/css" />
 
     <script type="text/javascript" src="Winwheel.min.js"></script>
@@ -42,11 +44,32 @@
             </div>
             <div class="container">
                 <button id="Spin_Button" class="spin button clickable" onClick="startSpin();">SPIN</button>
-
                 <button id="Reset_Button" class="reset button clickable" onClick="resetWheel();">RESET</button>
             </div>
         </div>
     </div>
+
+    <div id="AdminControls">
+        <!-- Floating Action Button(FAB) -->
+        <div id="FAB">
+            <button class="icon" onclick="openSettings()">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    
+        <div id="AdminSettings" class="close-AdminSettings">
+            <div class="header">
+                <h2>Admin Settings</h2>
+            </div>
+            <div class="content">
+                <div class="row1">
+                    <label>Prize</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/script.js"></script>
     <script src="scripts/spinTheWheel.js"></script>
 </body>
