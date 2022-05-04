@@ -1,0 +1,26 @@
+/* Debugging Borders */
+
+/* Main content */
+/* #Main, #Main p, .the_wheel, #Outcome, #Prize label, #Spin_Button, #Controls button{
+    border:3px solid red !important;
+}
+
+#MainTitle, #canvas, #Controls{
+    border:3px solid blue !important;
+}
+
+#Main h1, .toggle input, #Wheel, #Prize, #Controls .container{
+    border:3px solid green !important;
+} */
+
+
+/* Settings */
+/* #AdminSettings, #AdminSettings .content, #AdminSettings .content div *{
+    border:3px solid red !important;
+}
+#AdminControls, #FAB .icon, #FAB span,  #AdminSettings .header h2{
+    border:3px solid blue !important;
+}
+#FAB, #AdminSettings .header,  #AdminSettings .content div{
+    border:3px solid green !important;
+} */
