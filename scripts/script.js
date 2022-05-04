@@ -27,17 +27,17 @@ function openSettings(){
     var closed = document.getElementById("AdminSettings").classList.contains('close-AdminSettings');
     // Open settings
     if (closed && isAdmin)
-        var x = document.getElementById("AdminSettings").classList.remove('close-AdminSettings');
+        document.getElementById("AdminSettings").classList.remove('close-AdminSettings');
     // Close settings
     else
-        var x = document.getElementById("AdminSettings").classList.add('close-AdminSettings');
+        document.getElementById("AdminSettings").classList.add('close-AdminSettings');
 }
 
 // Force close admin settings(if opened)
 function isSettingsOpen(){
     var opened = !document.getElementById("AdminSettings").classList.contains('close-AdminSettings');
     if (opened){
-        var x = document.getElementById("AdminSettings").classList.add('close-AdminSettings');
+        document.getElementById("AdminSettings").classList.add('close-AdminSettings');
         // Changes theme after closing admin settings
         setTimeout(function() {
             document.getElementById("theme").href = "styles/userTheme.css";
