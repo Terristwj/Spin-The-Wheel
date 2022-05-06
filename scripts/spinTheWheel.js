@@ -1,11 +1,11 @@
 // Dummy data
 const prizeList = [
-    ["1", "Prize 1", "100/6", genColor(6)],
-    ["2", "Prize 2", "100/6", genColor(6)],
-    ["3", "Prize 3", "100/6", genColor(6)],
-    ["4", "Prize 4", "100/6", genColor(6)],
-    ["5", "Prize 5", "100/6", genColor(6)],
-    ["6", "Prize 6", "100/6", genColor(6)]
+    ["1", "Common", "70.000", genColor(6)],
+    ["2", "Uncommon", "17.300", genColor(6)],
+    ["3", "Rare", "10.000", genColor(6)],
+    ["4", "Epic", "2.600", genColor(6)],
+    ["5", "Legendary", "0.099", genColor(6)],
+    ["6", "Meeples", "0.001", genColor(6)]
 ]
 
 // Color generator
@@ -69,34 +69,135 @@ function addDataValue(i, value){
     document.getElementsByClassName('prizeRemove')[i].value = prizeList[i][0];
 }
 
+// Validate updates in HTML admin entry
+function validatedEntries(){
+    var totalChance = 0;    // Total Current
+    var errorMsg;           // Error message
+    var chance;             // Current row
+
+    var x, x1, x2;          // Array split containers
+    
+    var userInput               // User input for hexadecimal
+    var re = /[0-9A-Fa-f]{6}/g; // Hexadecimal condition
+
+    var hexCondition = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+    var isHexValidated;
+
+    var elements = document.getElementsByClassName("prizeRow");
+    // Validates array from HTML
+    for (i=0;i<elements.length;i++){
+        // Current row
+        element = elements[i];
+
+        // To void empty HTML rows 
+        if (element.getAttribute("data-value") !== "" || 
+            (   element.children[0].value + 
+                element.children[1].value + 
+                element.children[2].value )
+        ){
+            // Validates chance category
+            chance = element.children[1].value;
+            x = chance.split('.');
+            x1 = x[0].split('');;
+            x2 = x[1].split('');;
+
+            // Decimal point must be length of 3
+            if (x2.length === 3){
+                // Checks if every char is a number before decimal point
+                for(n = 0; n < x1.length; n++)
+                    // Must be a number
+                    if (isNaN(x1[n]))
+                        return [false, errorMsg="Invalid number: " + chance]
+
+                // Checks if every char is a number after decimal point
+                for(n = 0; n < x2.length; n++)
+                    // Must be a number
+                    if (isNaN(x2[n]))
+                    return [false, errorMsg="Invalid number: " + chance]
+            } else
+                return [false, errorMsg="Must be 3 decimal points: " + chance]
+
+            // Adds up chances
+            chance = parseFloat(chance);
+            // Total chance must be equal to 100
+            totalChance += chance;
+
+            // User input for hexadecimal textfield
+            userInput = element.children[2].value;
+            // Validates hexadecimal is correct
+            if (userInput.length === 7){
+                if (userInput.charAt(0) !== "#")
+                    return [false, errorMsg="No # symbol found: " + userInput]
+                // if(!re.test(userInput.substring(1))){
+                //     console.log(userInput.substring(1));
+                //     return [false, errorMsg="Invalid color range: " + userInput]
+                // }
+                x = userInput.substring(1).split('');
+                for (n1 = 0; n1 < x.length; n1++){
+                    for (n2 = 0; n2 < hexCondition.length; n2++){
+                        isHexValidated = false;
+                        console.log(x[n1]);
+                        console.log(hexCondition[n2]);
+                        if (x[n1] === hexCondition[n2]){
+                            isHexValidated = true;
+                            break;
+                        }
+                    }
+
+                    if (!isHexValidated)
+                        return [false, errorMsg="Invalid color range: " + userInput]
+                }
+            } else
+                return [false, errorMsg="Must be 6 digits: " + userInput]
+        }
+    }
+
+    console.log(totalChance);
+    // Validates total chance = 100
+    if (totalChance != 100)
+        return [false, errorMsg="Not 100% total chance: " + totalChance]
+    return [true, errorMsg="Successfully Updated!"]
+}
+
 // Repopulate array from HTML
 function repopulatePrizeList(){
     var x = prizeList.length;
-    var index = parseInt(prizeList[x-1][0])+1;
-    // Remove Prize Array
+    var newindex = parseInt(prizeList[x-1][0])+1;
+
+    
+    // Remove Current Prize Array
     for (i=0;i<x;i++)
         prizeList.pop();
 
     var elements = document.getElementsByClassName("prizeRow");
     // Repopulate array from HTML
     for (i=0;i<elements.length;i++){
-        // Only allow unregistered prizes to save as data value
-        if (elements[i].children[0].value != "" && 
-        elements[i].children[1].value != "" && 
-        elements[i].children[2].value != "" && 
-        elements[i].children[3].value == "")
-            addDataValue(i, [index, elements[i].children[0].value, elements[i].children[1].value, elements[i].children[2].value]);
+        // Current row
+        var element = elements[i];
+
+        // Only allow unregistered prizes to save as data-value
+        if (element.children[0].value != "" && 
+        element.children[1].value != "" && 
+        element.children[2].value != "" && 
+        element.children[3].value == ""){
+            // New data not registered
+            var newDataValue = [newindex, element.children[0].value, element.children[1].value, element.children[2].value];
+            // Saves the unregistered data-value
+            addDataValue(i, newDataValue);
+        }
         
         // To void empty HTML rows 
-        if (elements[i].getAttribute("data-value") !== ""){
-            // To validate data value and text values are the same
-            // INSERT CODE HERE
-            // INSERT CODE HERE
-            // INSERT CODE HERE
-            // INSERT CODE HERE
+        if (element.getAttribute("data-value") !== ""){
+            // To validate data-value and text values are the same
+            if (element.getAttribute("data-value") !== dataValue){
+                // Current data in the row
+                var dataValue = [element.children[3].value, element.children[0].value, element.children[1].value, element.children[2].value];
+                // Saves the changes to data-value
+                element.setAttribute("data-value", dataValue);
+            }
 
             // To populate prizeList
-            prizeList.push(elements[i].getAttribute("data-value").split(','));
+            prizeList.push(element.getAttribute("data-value").split(','));
         }
     }
 }
@@ -122,16 +223,25 @@ function addPrizeInput(){
 
 // Updates Prize Input
 function updatePrizeInput(){
-    // Repopulate array from HTML
-    repopulatePrizeList();
+    //  Validate entries in HTML
+    var validatedResults = validatedEntries();
+    if (validatedResults[0]) {
+        // Repopulate array from HTML
+        repopulatePrizeList();
 
-    // If have empty HTML row, delete all empty HTML rows
-    do {
-        var index = document.getElementsByClassName("prizeRow").length;
-        var element = document.getElementsByClassName("prizeRow")[index-1];
-        if(!Boolean(element.id))
-            element.remove();
-    } while(!Boolean(element.id))
+        // If have empty HTML row, delete all empty HTML rows
+        do {
+            var index = document.getElementsByClassName("prizeRow").length;
+            var element = document.getElementsByClassName("prizeRow")[index-1];
+            if(!Boolean(element.id))
+                element.remove();
+        } while(!Boolean(element.id))
+
+        alert(validatedResults[1]);
+        console.log(prizeList);
+    } else{
+        alert(validatedResults[1]);
+    }
 }
 
 
@@ -140,7 +250,7 @@ function removePrizeInput(value){
     var element = document.getElementById('PrizeRow' + value);
     try {
         // Remove Prize Input
-        element.remove();;
+        element.remove();
       } catch (element_is_null) {
         // Note - error messages will vary depending on browser
         // If HTML row is empty, remove last empty row
@@ -150,7 +260,7 @@ function removePrizeInput(value){
       }
       
     // Repopulate array from HTML
-    repopulatePrizeList();
+    // repopulatePrizeList();
 }
 
 
