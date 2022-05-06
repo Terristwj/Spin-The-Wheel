@@ -133,4 +133,20 @@
     text-align: left;
     font-family: 'Verdana';
 }
+
+
+
+#PrizeList .prizeRow{
+    display:flex;
+    width:99%;
+}
+#PrizeList .prizeRow input{
+    min-width: 0px;
+}
+#PrizeList .prizeRow input:first-child{
+    flex:2;
+}
+#PrizeList .prizeRow input:not(:first-child){
+    flex:1;
+}
 /*  */

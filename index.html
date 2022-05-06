@@ -16,7 +16,7 @@
     <script type="text/javascript" src="Winwheel.min.js"></script>
     <script type="text/javascript" src="TweenMax.min.js"></script>
 </head>
-<body onload="bodyLoad()">
+<body onload="bodyLoad();loadAdminSettings();">
     <div id="Main">
         <div id="MainTitle">
             <h1>Spin The Wheel</h1>
@@ -63,8 +63,14 @@
                 <h2>Admin Settings</h2>
             </div>
             <div class="content">
-                <div class="row1">
-                    <label>Prize</label>
+                <div>
+                    <button onclick="addPrizeInput()">Add</button>
+                    <button onclick="updatePrizeInput()">Update</button>
+                </div>
+                <div>
+                    <label>Current Prizes:</label>
+                </div>
+                <div id="PrizeList">
                 </div>
             </div>
         </div>

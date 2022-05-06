@@ -1,3 +1,160 @@
+// Dummy data
+const prizeList = [
+    ["1", "Prize 1", "100/6", genColor(6)],
+    ["2", "Prize 2", "100/6", genColor(6)],
+    ["3", "Prize 3", "100/6", genColor(6)],
+    ["4", "Prize 4", "100/6", genColor(6)],
+    ["5", "Prize 5", "100/6", genColor(6)],
+    ["6", "Prize 6", "100/6", genColor(6)]
+]
+
+// Color generator
+// Input length of output with 'len'.
+function genColor(len){
+    return "#" + genHexString(len);
+}
+// Random Hexadecimal generator.
+function genHexString(len) {
+    let output = '';
+    for (let i = 0; i < len; ++i) {
+        output += (Math.floor(Math.random() * 16)).toString(16);
+    }
+    return output;
+}
+
+// Setters for prizes
+function setName(index, value){
+    prizeList[index][1] = value;
+}
+function setChance(index, value){
+    prizeList[index][2] = value;
+}
+function setColor(index, value){
+    prizeList[index][3] = value;
+}
+
+// Get HTML format
+function getHTMLFormat(){
+    var stringConcat = "<div class=\"prizeRow\" data-value=\"\">"
+    stringConcat += "<input class=\"prizeName\" type=\"text\" placeholder=\"Prize\" value=\"\"/>";
+    stringConcat += "<input class=\"prizeChance\" type=\"text\" placeholder=\"Chance\" value=\"\"/>";
+    stringConcat += "<input class=\"prizeColor\" type=\"text\" placeholder=\"Color\" value=\"\"/>";
+    stringConcat += "<button class=\"prizeRemove\" type=\"button\" value=\"\" onclick=\"removePrizeInput(this.value)\">X</button>";
+    stringConcat += "</div>";
+
+    return stringConcat;
+}
+
+// Populate HTML
+function populateHTML(numItems){
+    for(i=0; i<numItems; i++){
+        populateHTMLOnce(i);
+    }
+}
+// Populate HTML once
+function populateHTMLOnce(i){
+    document.getElementsByClassName('prizeRow')[i].setAttribute("data-value", [prizeList[i][0], prizeList[i][1], prizeList[i][2], prizeList[i][3]]);
+    document.getElementsByClassName('prizeRow')[i].id = "PrizeRow" + prizeList[i][0];
+
+    document.getElementsByClassName('prizeName')[i].value = prizeList[i][1];
+    document.getElementsByClassName('prizeChance')[i].value = prizeList[i][2];
+    document.getElementsByClassName('prizeColor')[i].value = prizeList[i][3];
+    document.getElementsByClassName('prizeRemove')[i].value = prizeList[i][0];
+}
+
+// Add 'data-value' to prizeRow
+function addDataValue(i, value){
+    document.getElementsByClassName('prizeRow')[i].setAttribute("data-value", value);
+    document.getElementsByClassName('prizeRow')[i].id = "PrizeRow" + value[0];
+    document.getElementsByClassName('prizeRemove')[i].value = prizeList[i][0];
+}
+
+// Repopulate array from HTML
+function repopulatePrizeList(){
+    var x = prizeList.length;
+    var index = parseInt(prizeList[x-1][0])+1;
+    // Remove Prize Array
+    for (i=0;i<x;i++)
+        prizeList.pop();
+
+    var elements = document.getElementsByClassName("prizeRow");
+    // Repopulate array from HTML
+    for (i=0;i<elements.length;i++){
+        // Only allow unregistered prizes to save as data value
+        if (elements[i].children[0].value != "" && 
+        elements[i].children[1].value != "" && 
+        elements[i].children[2].value != "" && 
+        elements[i].children[3].value == "")
+            addDataValue(i, [index, elements[i].children[0].value, elements[i].children[1].value, elements[i].children[2].value]);
+        
+        // To void empty HTML rows 
+        if (elements[i].getAttribute("data-value") !== ""){
+            // To validate data value and text values are the same
+            // INSERT CODE HERE
+            // INSERT CODE HERE
+            // INSERT CODE HERE
+            // INSERT CODE HERE
+
+            // To populate prizeList
+            prizeList.push(elements[i].getAttribute("data-value").split(','));
+        }
+    }
+}
+
+// On bodyLoad
+function loadAdminSettings(){
+    var numItems = prizeList.length;
+
+    // 1. Create HTML
+    for(i=0; i<numItems; i++)
+        document.getElementById("PrizeList").innerHTML += getHTMLFormat();
+    // 2. Populate HTML
+    populateHTML(numItems);
+}
+
+// Add Prize Input
+function addPrizeInput(){
+    // 1. Create HTML
+    document.getElementById("PrizeList").innerHTML += getHTMLFormat();
+    // 2. Populate HTML
+    populateHTML(prizeList.length);
+}
+
+// Updates Prize Input
+function updatePrizeInput(){
+    // Repopulate array from HTML
+    repopulatePrizeList();
+
+    // If have empty HTML row, delete all empty HTML rows
+    do {
+        var index = document.getElementsByClassName("prizeRow").length;
+        var element = document.getElementsByClassName("prizeRow")[index-1];
+        if(!Boolean(element.id))
+            element.remove();
+    } while(!Boolean(element.id))
+}
+
+
+// Remove Prize
+function removePrizeInput(value){
+    var element = document.getElementById('PrizeRow' + value);
+    try {
+        // Remove Prize Input
+        element.remove();;
+      } catch (element_is_null) {
+        // Note - error messages will vary depending on browser
+        // If HTML row is empty, remove last empty row
+        index = document.getElementsByClassName("prizeRow").length;
+        element = document.getElementsByClassName("prizeRow")[index-1];
+        element.remove();
+      }
+      
+    // Repopulate array from HTML
+    repopulatePrizeList();
+}
+
+
+
 // Edit duration and spins to adjust wheel spin animation speed.
 // Adjust the number of spins for the wheel.
 let wheelDuration = 5;
@@ -49,6 +206,32 @@ let theWheel = new Winwheel({
 //     c.restore();
 // }
 
+
+// -----------------------------------------------------------------
+// Function called when add segments.
+// -----------------------------------------------------------------
+function addSegment(name, color){
+    // The Second parameter specifies the position,
+    // in this case '1' adds a new segment at the start of the wheel.
+    theWheel.addSegment({
+        'text' : name,
+        'fillStyle' : color
+    }, prizeList.length);
+
+    // Updates wheel
+    theWheel.draw();
+}
+
+// -----------------------------------------------------------------
+// Function called when deleting segments.
+// -----------------------------------------------------------------
+function deleteSegment(index){
+    // Remove segment from wheel
+    theWheel.deleteSegment(index);
+
+    // Updates wheel
+    theWheel.draw();
+}
 
 // -----------------------------------------------------------------
 // Function called when segment under the prize pointer changes.
