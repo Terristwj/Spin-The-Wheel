@@ -33,9 +33,9 @@
 
 #canvas{
     background-image: url(../images/wheel_back.png);
-    background-size: 436px 587px;
+    background-size: 100%;
     background-position: center;
-    background-repeat: none; 
+    background-repeat: no-repeat;
 }
 /*  */
 

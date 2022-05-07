@@ -16,7 +16,7 @@
     height:70px;
     width:70px;
     right:10px;
-    bottom:1%;
+    top:4%;
     border-radius: 50px;
     background-color: #ff0081;
     box-shadow: 0px 0px 10px #ff61b1;
@@ -117,7 +117,8 @@
     margin-top:20px;
 
     padding:10px;
-    text-align: center;
+    padding-left:25px;
+    text-align: left;
     font-family: 'Verdana';
 }
 

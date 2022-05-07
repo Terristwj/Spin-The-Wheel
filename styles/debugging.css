@@ -15,10 +15,10 @@
 
 
 /* Settings */
-/* #AdminSettings, #AdminSettings .content, #AdminSettings .content div *{
+/* #AdminSettings, #AdminSettings .content{
     border:3px solid red !important;
 }
-#AdminControls, #FAB .icon, #FAB span,  #AdminSettings .header h2{
+#AdminControls, #FAB .icon, #FAB span, #ContentButtonsContainer .button,  #AdminSettings .header h2{
     border:3px solid blue !important;
 }
 #FAB, #AdminSettings .header,  #AdminSettings .content div{
