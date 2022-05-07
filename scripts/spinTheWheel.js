@@ -283,9 +283,7 @@ let theWheel = new Winwheel({
         {'fillStyle' : '#7de6ef', 'text' : 'Prize 3'},
         {'fillStyle' : '#e7706f', 'text' : 'Prize 4'},
         {'fillStyle' : '#eae56f', 'text' : 'Prize 5'},
-        {'fillStyle' : '#89f26e', 'text' : 'Prize 6'},
-        {'fillStyle' : '#7de6ef', 'text' : 'Prize 7'},
-        {'fillStyle' : '#e7706f', 'text' : 'Prize 8'}
+        {'fillStyle' : '#89f26e', 'text' : 'Prize 6'}
     ],
     'animation' :           // Specify the animation to use.
     {
@@ -417,6 +415,9 @@ function startSpin()
         spinButtonClassList.add('button-disabled');
         spinButtonClassList.remove('clickable');
 
+        // This formula always makes the wheel stop at an angle.
+        theWheel.animation.stopAngle = calculateWheelPrizeAngle();
+
         // Begin the spin animation by calling startAnimation on the wheel object.
         theWheel.startAnimation();
 
@@ -425,7 +426,6 @@ function startSpin()
         wheelSpinning = true;
     }
 }
-
 // -------------------------------------------------------
 // Function for reset button.
 // -------------------------------------------------------
@@ -455,4 +455,65 @@ function resetWheel()
     prize.classList.add('invisible');
     prize.classList.remove('outcome');
     prize.innerHTML = "";
+}
+
+// -------------------------------------------------------
+// Function to calculate wheel angle to stop spinning
+// -------------------------------------------------------
+function calculateWheelPrizeAngle(){
+    // ----------------------------------------------------------
+    // 1. Generate list of angle sets.
+    // 2. Generate list of prize-chances sets.
+    // 3. Random number generator to pick a prize-chance set.
+    // 4. Random angle genrator to spin wheel to allocated prize.
+    // 5. Return random angle between corresponding angle set.
+    // ----------------------------------------------------------
+
+    var numOfPrizes = prizeList.length;
+
+    // [1]
+    var prevAngle = 0;
+    var angleIncrement = 360 / numOfPrizes;
+    var angleList = [];
+    for (i = 0; i < prizeList.length; i++)
+        angleList.push([prevAngle, prevAngle += angleIncrement]);
+    console.log("1. List of Angles: " + angleList);
+
+    // [2]
+    var prevChance = 0.000;
+    var chanceList = [];
+    for (i = 0; i < numOfPrizes; i++)
+        chanceList.push(
+        [   prevChance, 
+            prevChance += parseFloat(prizeList[i][2])
+        ]);
+    console.log("2. List of Chances: " + chanceList);
+
+    // [3]
+    var randNum = Math.floor(Math.random() * 100000);
+    var storedIndex;
+    for (i = 0; i < chanceList.length; i++)
+        if (randNum >= chanceList[i][0]*1000 && randNum <= chanceList[i][1]*1000)
+            storedIndex = i;
+    console.log("3.1 Array Index: " + storedIndex);
+    console.log("3.2 Random Chance * 1000: " + randNum);
+    console.log("3.3 Array Chance * 1000: " + [
+        (chanceList[storedIndex][0]*1000), 
+        (chanceList[storedIndex][1]*1000) ]);
+
+    // [4]
+    var ceiling = angleList[storedIndex][1];
+    var floor = angleList[storedIndex][0];
+    randNum = Math.floor(Math.random() * (ceiling - floor + 1) + floor)
+    console.log("4.1 Random Angle: " + randNum);
+    console.log("4.2 Array Angle: " + [floor, ceiling]);
+    
+    // [5]
+    console.log("Wheel will stop at Angle: " + [randNum] + 
+                "\nBetween angles: " + floor + " - " + ceiling);
+    console.log("Picking prize number: " + [storedIndex + 1]);
+
+    return randNum;
+    
+    // Important thing is to set the stopAngle of the animation before stating the spin.
 }
