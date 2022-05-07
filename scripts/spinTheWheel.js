@@ -298,6 +298,7 @@ let theWheel = new Winwheel({
     'numSegments'  : prizeList.length*2,     
     'outerRadius'  : 212,   
     'textFontSize' : 28,    
+    'responsive'   : true,
     'segments'     : reloadWheelPrizes(),
     'animation' :           // Specify the animation to use.
     {
