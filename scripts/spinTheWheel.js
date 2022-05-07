@@ -66,7 +66,8 @@ function populateHTMLOnce(i){
 function addDataValue(i, value){
     document.getElementsByClassName('prizeRow')[i].setAttribute("data-value", value);
     document.getElementsByClassName('prizeRow')[i].id = "PrizeRow" + value[0];
-    document.getElementsByClassName('prizeRemove')[i].value = prizeList[i][0];
+    // Increment index
+    document.getElementsByClassName('prizeRemove')[i].value = prizeList[prizeList.length-1][0];
 }
 
 // Validate updates in HTML admin entry
@@ -84,22 +85,42 @@ function validatedEntries(){
     var isHexValidated;
 
     var elements = document.getElementsByClassName("prizeRow");
+    
     // Validates array from HTML
     for (i=0;i<elements.length;i++){
         // Current row
         element = elements[i];
 
-        // To void empty HTML rows 
-        if (element.getAttribute("data-value") !== "" || 
-            (   element.children[0].value + 
-                element.children[1].value + 
-                element.children[2].value )
+        // Only allowed filled HTML rows. Filter out empty HTML rows.
+        if (element.getAttribute("data-value") !== "" ||
+            element.children[0].value !== "" ||
+            element.children[1].value !== "" ||
+            element.children[2].value !== ""
         ){
+            // Error if half complete
+            if (element.children[0].value === "" ||
+                element.children[1].value === "" ||
+                element.children[2].value === "" )
+                return [false, errorMsg="Half completed row: \n\'   " + 
+                    element.children[0].value + "   ;   " + 
+                    element.children[1].value + "   ;   " +
+                    element.children[2].value + "   \'" 
+                ]
+
             // Validates chance category
+            // Removes chances = 0
             chance = element.children[1].value;
+            if (chance === "0")
+                return [false, errorMsg="Chance must not be 0."]
             x = chance.split('.');
-            x1 = x[0].split('');;
-            x2 = x[1].split('');;
+            // console.log(x);
+            x1 = x[0].split('');
+            // Catches error where user never input decimal point
+            try {
+                x2 = x[1].split('');
+            } catch {
+                return [false, errorMsg="Chance must be 3 decimal points"]
+            }
 
             // Decimal point must be length of 3
             if (x2.length === 3){
@@ -136,8 +157,8 @@ function validatedEntries(){
                 for (n1 = 0; n1 < x.length; n1++){
                     for (n2 = 0; n2 < hexCondition.length; n2++){
                         isHexValidated = false;
-                        console.log(x[n1]);
-                        console.log(hexCondition[n2]);
+                        // console.log(x[n1]);
+                        // console.log(hexCondition[n2]);
                         if (x[n1] === hexCondition[n2]){
                             isHexValidated = true;
                             break;
@@ -152,7 +173,7 @@ function validatedEntries(){
         }
     }
 
-    console.log(totalChance);
+    // console.log(totalChance);
     // Validates total chance = 100
     if (totalChance != 100)
         return [false, errorMsg="Not 100% total chance: " + totalChance]
@@ -186,7 +207,7 @@ function repopulatePrizeList(){
             addDataValue(i, newDataValue);
         }
         
-        // To void empty HTML rows 
+        // Only allowed filled HTML rows. Filter out empty HTML rows.
         if (element.getAttribute("data-value") !== ""){
             // To validate data-value and text values are the same
             if (element.getAttribute("data-value") !== dataValue){
@@ -202,10 +223,14 @@ function repopulatePrizeList(){
     }
 }
 
-// On bodyLoad
-function loadAdminSettings(){
+// On bodyLoad & refresh button click
+function loadAdminSettings(isRefresh){
+    // For refesh button
+    if (isRefresh) {
+        document.getElementById("PrizeList").innerHTML = "";
+        alert("Refreshing Data!");
+    }
     var numItems = prizeList.length;
-
     // 1. Create HTML
     for(i=0; i<numItems; i++)
         document.getElementById("PrizeList").innerHTML += getHTMLFormat();
@@ -213,15 +238,7 @@ function loadAdminSettings(){
     populateHTML(numItems);
 }
 
-// Add Prize Input
-function addPrizeInput(){
-    // 1. Create HTML
-    document.getElementById("PrizeList").innerHTML += getHTMLFormat();
-    // 2. Populate HTML
-    populateHTML(prizeList.length);
-}
-
-// Updates Prize Input
+// On add update click - Updates Prize Input
 function updatePrizeInput(){
     //  Validate entries in HTML
     var validatedResults = validatedEntries();
@@ -238,21 +255,27 @@ function updatePrizeInput(){
         } while(!Boolean(element.id))
 
         alert(validatedResults[1]);
-        console.log(prizeList);
+        // console.log(prizeList);
     } else{
         alert(validatedResults[1]);
     }
 }
 
+// On add button click - Add Prize Row (Never Update)
+function addPrizeInput(){
+    // 1. Create HTML
+    document.getElementById("PrizeList").innerHTML += getHTMLFormat();
+    // 2. Populate HTML
+    populateHTML(prizeList.length);
+}
 
-// Remove Prize
+// On remove button click - Remove Prize Row (Never Update)
 function removePrizeInput(value){
     var element = document.getElementById('PrizeRow' + value);
     try {
         // Remove Prize Input
         element.remove();
-      } catch (element_is_null) {
-        // Note - error messages will vary depending on browser
+      } catch {
         // If HTML row is empty, remove last empty row
         index = document.getElementsByClassName("prizeRow").length;
         element = document.getElementsByClassName("prizeRow")[index-1];
@@ -272,19 +295,10 @@ let wheelSpins; // Randomly generated value below
 
 // Wheel Object Starts Here.
 let theWheel = new Winwheel({
-    'numSegments'  : 6,     
+    'numSegments'  : prizeList.length*2,     
     'outerRadius'  : 212,   
     'textFontSize' : 28,    
-    'segments'     :        // Define segments including colour and text.
-    [
-        // Insert item names here
-        {'fillStyle' : '#eae56f', 'text' : 'Prize 1'},
-        {'fillStyle' : '#89f26e', 'text' : 'Prize 2'},
-        {'fillStyle' : '#7de6ef', 'text' : 'Prize 3'},
-        {'fillStyle' : '#e7706f', 'text' : 'Prize 4'},
-        {'fillStyle' : '#eae56f', 'text' : 'Prize 5'},
-        {'fillStyle' : '#89f26e', 'text' : 'Prize 6'}
-    ],
+    'segments'     : reloadWheelPrizes(),
     'animation' :           // Specify the animation to use.
     {
         'type' : 'spinToStop',
@@ -314,6 +328,25 @@ let theWheel = new Winwheel({
 //     c.restore();
 // }
 
+// -----------------------------------------------------------------
+// Function to load the wheel with prizes (Used on page load)
+// -----------------------------------------------------------------
+function reloadWheelPrizes(){
+    var colorAndPrize;
+    var wheelSegments = [];
+
+    // As each prize is listed 2x, repeat the loop 2x.
+    for (i = 0; i < 2; i++)
+        // Add color and prize into the wheel segment.
+        for (n = 0; n < (prizeList.length); n++) {
+            colorAndPrize = {
+                'fillStyle' : prizeList[n][3], 'text' : prizeList[n][1]
+            };
+            wheelSegments.push(colorAndPrize);
+        }
+
+    return wheelSegments;
+}
 
 // -----------------------------------------------------------------
 // Function called when add segments.
@@ -339,6 +372,26 @@ function deleteSegment(index){
 
     // Updates wheel
     theWheel.draw();
+}
+
+// -----------------------------------------------------------------
+// Function called when updating wheel
+// -----------------------------------------------------------------
+function updateSegments(){
+    theWheel = new Winwheel({
+        'numSegments'  : prizeList.length*2,     
+        'outerRadius'  : 212,   
+        'textFontSize' : 28,    
+        'segments'     : reloadWheelPrizes(),
+        'animation' :           // Specify the animation to use.
+        {
+            'type' : 'spinToStop',
+            'duration' : wheelDuration,       // Speed is controlled here, less is faster.
+            'callbackSound'    : playSound,   // Function Call tick sound.
+            'soundTrigger'     : 'segment',   // Set to 'pins' or 'segment'. Read documentations.
+            'callbackFinished' : 'alertPrize()'
+        }
+    });
 }
 
 // -----------------------------------------------------------------
@@ -468,16 +521,20 @@ function calculateWheelPrizeAngle(){
     // 4. Random angle genrator to spin wheel to allocated prize.
     // 5. Return random angle between corresponding angle set.
     // ----------------------------------------------------------
-
     var numOfPrizes = prizeList.length;
-
+    var fullSpin = 180;
+    // IMPORTANT NOTE: Full spin must be 180deg,
+    // Because there is a bug where if it is 360deg,
+    // It may(50/50) add 180deg to my final calculations
+    // Which will output the prize OR the prize +180deg from it.
+    
     // [1]
     var prevAngle = 0;
-    var angleIncrement = 360 / numOfPrizes;
+    var angleIncrement = fullSpin / numOfPrizes;
     var angleList = [];
     for (i = 0; i < prizeList.length; i++)
         angleList.push([prevAngle, prevAngle += angleIncrement]);
-    console.log("1. List of Angles: " + angleList);
+    // console.log("1. List of Angles: " + angleList);
 
     // [2]
     var prevChance = 0.000;
@@ -487,7 +544,7 @@ function calculateWheelPrizeAngle(){
         [   prevChance, 
             prevChance += parseFloat(prizeList[i][2])
         ]);
-    console.log("2. List of Chances: " + chanceList);
+    // console.log("2. List of Chances: " + chanceList);
 
     // [3]
     var randNum = Math.floor(Math.random() * 100000);
@@ -495,23 +552,23 @@ function calculateWheelPrizeAngle(){
     for (i = 0; i < chanceList.length; i++)
         if (randNum >= chanceList[i][0]*1000 && randNum <= chanceList[i][1]*1000)
             storedIndex = i;
-    console.log("3.1 Array Index: " + storedIndex);
-    console.log("3.2 Random Chance * 1000: " + randNum);
-    console.log("3.3 Array Chance * 1000: " + [
-        (chanceList[storedIndex][0]*1000), 
-        (chanceList[storedIndex][1]*1000) ]);
+    // console.log("3.1 Array Index: " + storedIndex);
+    // console.log("3.2 Random Chance * 1000: " + randNum);
+    // console.log("3.3 Array Chance * 1000: " + [
+    //     (chanceList[storedIndex][0]*1000), 
+    //     (chanceList[storedIndex][1]*1000) ]);
 
     // [4]
     var ceiling = angleList[storedIndex][1];
     var floor = angleList[storedIndex][0];
     randNum = Math.floor(Math.random() * (ceiling - floor + 1) + floor)
-    console.log("4.1 Random Angle: " + randNum);
-    console.log("4.2 Array Angle: " + [floor, ceiling]);
+    // console.log("4.1 Random Angle: " + randNum);
+    // console.log("4.2 Array Angle: " + [floor, ceiling]);
     
     // [5]
-    console.log("Wheel will stop at Angle: " + [randNum] + 
-                "\nBetween angles: " + floor + " - " + ceiling);
-    console.log("Picking prize number: " + [storedIndex + 1]);
+    // console.log("Wheel will stop at Angle: " + [randNum] + 
+    //             "\nBetween angles: " + floor + " - " + ceiling);
+    // console.log("Picking prize number: " + [storedIndex + 1]);
 
     return randNum;
     
