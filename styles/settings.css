@@ -15,8 +15,8 @@
     position:absolute;
     height:70px;
     width:70px;
-    right:50px;
-    bottom:50%;
+    right:10px;
+    bottom:1%;
     border-radius: 50px;
     background-color: #ff0081;
     box-shadow: 0px 0px 10px #ff61b1;
@@ -134,11 +134,49 @@
     font-family: 'Verdana';
 }
 
+#ContentButtonsContainer{
+    margin-bottom:20px;
+    display:flex;
+}
 
+#ContentButtonsContainer .button{
+    font-size: 16px;
+    margin: 0px 5px;
+    padding: 10px 0px;
+    flex:1;
 
-#PrizeList .prizeRow{
+    color: #fff;
+    border-radius: 25px;
+    border: none;
+
+    position: relative;
+    transition: box-shadow ease-in 0.25s, transform ease-in 0.25s;
+}
+#ContentButtonsContainer .button:hover{
+    transform: scale(0.9);
+}
+
+.add, .update, .refresh{
+    background-color: #eb0077;
+    box-shadow: 0 2px 5px #ff61b1;
+}
+.add:hover, .update:hover, .refresh:hover{
+    background-color: #b3005b;
+    box-shadow: 0 2px 5px #a30254;
+}
+
+#PrizeListHeader{
+    margin-top:5px;
+}
+#PrizeList .prizeRow, #PrizeListHeader{
     display:flex;
     width:99%;
+}
+#PrizeListHeader div:first-child{
+    width: 46%;
+}
+#PrizeListHeader div:not(:first-child){
+    width: 25%;
 }
 #PrizeList .prizeRow input{
     min-width: 0px;
