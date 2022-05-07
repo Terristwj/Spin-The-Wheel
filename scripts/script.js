@@ -12,12 +12,15 @@ function changeView(){
 function changeTheme(){
     var isAdmin = document.getElementById("Toggle").checked;
     // Change to Admin
-    if (isAdmin)
+    if (isAdmin){
         document.getElementById("theme").href = theme_href = "styles/adminTheme.css";
+        document.getElementById("AdminControls").classList.remove("invisible");
+    }
     // Change to User
     else{
         // Checks to see if settings is opened
        isSettingsOpen();
+       document.getElementById("AdminControls").classList.add("invisible");
     }
 }
 
